@@ -23,6 +23,10 @@
     .attribution a {
       color: hsl(228, 45%, 44%);
     }
+
+    .imageRoler{
+      transform: rotate(180);
+    }
   </style>
 </head>
 
@@ -32,7 +36,7 @@
     <q id="advice"></q>
     <img class="divider" src="./images/pattern-divider-desktop.svg" alt="pattern-divider-desktop" />
     <figure class="dice">
-      <img src="./images/icon-dice.svg" alt="icon-dice" onclick="refresh()" />
+      <img class="imageRoler" src="./images/icon-dice.svg" alt="icon-dice" onclick="refresh()" />
     </figure>
   </main>
 
@@ -50,7 +54,7 @@
       location.reload();
     }
 
-    fetch("https://api.adviceslip.com/advice")
+    const genAdvice = fetch("https://api.adviceslip.com/advice")
       .then((response) => response.json())
       .then((data) => {
         adviceId.innerHTML = data.slip.id;
