@@ -24,17 +24,23 @@
       color: hsl(228, 45%, 44%);
     }
 
-    .imageRoler{
-      transform: rotate(180);
+    .dice img {
+      height: 100%;
+      transition: transform 0.5s ease;
+    }
+
+    .dice:hover img {
+      transform: rotate(180deg);
     }
   </style>
 </head>
 
 <body>
   <main>
-    <p>Advice # <span id="adviceId"></span></p>
-    <q id="advice"></q>
+    <p>Advice # <span id="adviceId">Loading...</span></p>
+    <q id="advice">Advice Loading...</q>
     <img class="divider" src="./images/pattern-divider-desktop.svg" alt="pattern-divider-desktop" />
+    <p>Roll the dice to get a new advice </p>
     <figure class="dice">
       <img class="imageRoler" src="./images/icon-dice.svg" alt="icon-dice" onclick="refresh()" />
     </figure>
@@ -50,16 +56,20 @@
     const adviceId = document.getElementById("adviceId");
     const advice = document.getElementById("advice");
 
-    const refresh = () => {
-      location.reload();
-    }
+    async function refresh() {
+      try {
+        const response = await fetch("https://api.adviceslip.com/advice");
+        const data = await response.json();
 
-    const genAdvice = fetch("https://api.adviceslip.com/advice")
-      .then((response) => response.json())
-      .then((data) => {
         adviceId.innerHTML = data.slip.id;
         advice.innerHTML = data.slip.advice;
-      });
+      } catch (error) {
+        console.error("Error fetching advice, ", error)
+      }
+    }
+
+    window.onload = refresh;
+
   </script>
 </body>
 
